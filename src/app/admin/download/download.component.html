@@ -1,0 +1,124 @@
+<div class="row">
+  <nb-card class="col-md-6" status="info">
+    <nb-card-header>
+      Download Excel Year Wise
+    </nb-card-header>
+    <div class="row">
+      <h3 class="offset-lg-1 ">Select Year:</h3>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-lg-6 ">
+        <mat-select placeholder="select Year" [(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"
+          (ngModelChange)="filterYear($event)">
+          <mat-option value="2017">2017-2018</mat-option>
+          <mat-option value="2018">2018-2019</mat-option>
+          <mat-option value="2019">2019-2020</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </nb-card>
+  <!-- <nb-card class="col-md-6" status="info">
+		<nb-card-body>
+			<nb-card>
+				<nb-card-header>
+					First Payment Student Excel
+				</nb-card-header>
+				<nb-card-body>
+					<button nbButton outline status="primary" (click)="downloadFirstPaymentStudentExcel()">First Payment Student Excel Export</button>
+				</nb-card-body>
+			</nb-card>
+		</nb-card-body>
+	</nb-card> -->
+</div>
+<div class="row">
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          Second Payment Student Excel
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="primary" (click)="downloadStudentExcel()">Second Payment Student Excel
+            Export</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          Seats/Intake Excel Export
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="primary" (click)="showSeatsExcel()">Seats/Intake Excel Export</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+</div>
+<div class="row">
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          ICCR Student Excel Export
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="primary" (click)="ICCRExcel()">ICCR Student Excel Export</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          Excel Sheet with all payment Details
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="primary" (click)="paymentDetailsExcel()">Excel Sheet with all payment Details
+          </button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+</div>
+<div class="row">
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          Third Payment Student Excel Export
+        </nb-card-header>
+        <nb-card-body>
+          <button nbButton outline status="primary" (click)="showThirdPaymentExcel()">Third Payment Student Excel
+            Export</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+  <nb-card class="col-md-6" status="info">
+    <nb-card-body>
+      <nb-card>
+        <nb-card-header>
+          College Allocated Students
+        </nb-card-header>
+        <nb-card-body>
+		<div class="row">
+			<div class="col-md-12 ">
+				<mat-form-field class="example-full-width">
+				<mat-select placeholder="Select College" [(ngModel)]="selectedValue"
+					(ngModelChange)="getData(selectedValue)">
+					<mat-option *ngFor="let data of colleges" [value]="data.name">{{data.name}}</mat-option>
+				</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+          <button nbButton outline status="primary" (click)="showCollegeAllocatedExcel()">College Allocated Students
+            Excel Export</button>
+        </nb-card-body>
+      </nb-card>
+    </nb-card-body>
+  </nb-card>
+</div>

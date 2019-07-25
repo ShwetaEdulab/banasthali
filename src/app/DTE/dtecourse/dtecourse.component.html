@@ -1,0 +1,86 @@
+<div>
+    <nb-card status="success">
+        <nb-card-header>
+            <div>
+                <h4>{{specialization}}</h4>
+                <button nbButton size="medium" style="margin-top:15px; float:right;" (click)="Apply(courseid,courseDetail_Degree)" >Apply Now</button>
+            </div>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <nb-card >
+                                <nb-card-body >
+                                    <img src="https://mu.admissiondesk.org/uiserver/institute_assets/img/course2.png" style= "width: 350px; height: 300px;" ><br>
+                                    <h2>{{courseDetail_Name}}</h2>
+                                </nb-card-body>
+                            </nb-card>
+                            <nb-card>
+                                <nb-card-header>
+                                    Student Population :
+                                </nb-card-header>
+                                <nb-card-body>
+                                    <div class="row">
+                                        <div class="offset-md-1 offset-sm-2 offset-xs-2"></div>
+                                        <div class="col-md-5 col-sm-10 col-xs-10" colListPad>
+                                            <img class="img-responsive" src="https://mu.admissiondesk.org/uiserver/front_assets/img/women.png" height="100px" style="margin-left:5px;"/>
+                                            <h3>30%</h3>
+                                        </div>
+                                        <div class="col-md-5 col-sm-10 col-xs-10" colListPad>
+                                            <img class="img-responsive" src="https://mu.admissiondesk.org/uiserver/front_assets/img/man.png" height="100px" style="margin-left:5px;"/>
+                                            <h3>70%</h3>
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                        <div class="col-md-8">
+                            <nb-card >
+                                <nb-card-header>
+                                    Course Overview :
+                                </nb-card-header>
+                                <nb-card-body >
+                                    {{overview}}
+                                </nb-card-body>
+                            </nb-card>
+                            <div *ngIf = "process != '' ">
+                                <nb-card status="success">
+                                    <nb-card-header><b>Admission Procedure  :</b></nb-card-header>
+                                    <nb-card-body *ngFor= "let process of process">
+                                            <h6>Step {{process}}</h6>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                            <div *ngIf = "course_curriculum != '' ">
+                                <nb-card status="success">
+                                    <nb-card-header><b>Course curriculum  :</b></nb-card-header>
+                                    <nb-card-body>
+                                        <nb-accordion>
+                                            <nb-accordion-item *ngFor= "let curriculum of course_curriculum">
+                                                <nb-accordion-item-header>{{curriculum.semester}}</nb-accordion-item-header>
+                                                <nb-accordion-item-body *ngFor= "let subject of curriculum.subjects">
+                                                        <div><b>{{subject}}</b></div>
+                                                </nb-accordion-item-body>
+                                            </nb-accordion-item>
+                                        </nb-accordion>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>
+<div>
+    <p-confirmDialog [style]="{width: '425px'}"></p-confirmDialog>    
+</div>

@@ -1,0 +1,903 @@
+<nb-card>
+	<nb-card-body>
+		<div class="titleWrap">
+			<label>Reports</label>
+		</div>
+		<p-tabView (onChange)="getReportData($event)">
+			<p-tabPanel header="Admission Request">
+				<h3>Note : All applications.</h3>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+							<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear" (click)="filterText=''">
+								<mat-icon>close</mat-icon>
+							</button>
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="filterYearWise($event)" >
+								<mat-option value="2017">2017-2018</mat-option>
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total admissions requested:</b></h5>{{application_data?.length}}
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Application Date</div>
+							<div class="Rtable-cell topic-cell column-heading">Student Name</div>
+							<div class="Rtable-cell date-cell column-heading">Student City</div>
+							<div class="Rtable-cell date-cell column-heading">Student Country</div>
+							<div class="Rtable-cell date-cell column-heading">Degree</div>
+							<div class="Rtable-cell date-cell column-heading">Course</div>
+							<div class="Rtable-cell date-cell column-heading">Specialization</div>
+							<div class="Rtable-cell date-cell column-heading">Institute Name</div>
+							<div class="Rtable-cell date-cell column-heading">Intake</div>
+							<div class="Rtable-cell date-cell column-heading">Course Duration</div>
+							<div class="Rtable-cell date-cell column-heading">Fees</div>
+						</div>
+						
+						<div class="Rtable-row is-striped" *ngFor="let application of application_data | filter:{application_date: filterText, student_name: filterText, student_city: filterText, country_name: filterText, degree: filterText, course_name: filterText, specialization: filterText,college_name: filterText,duration: filterText,fees: filterText} | paginate: { itemsPerPage: 10, currentPage: p1 ,id:'1' }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Application Date</div>
+								<div class="Rtable-cell--content date-content">{{application?.application_date}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{application?.student_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Student City</div>
+								<div class="Rtable-cell--content date-content">{{application?.student_city}} </div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Student Country</div>
+								<div class="Rtable-cell--content date-content">{{application?.country_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Degree</div>
+								<div class="Rtable-cell--content date-content">{{application?.degree}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course</div>
+								<div class="Rtable-cell--content date-content">{{application?.course_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Specialization</div>
+								<div class="Rtable-cell--content date-content">{{application?.specialization}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Institute Name</div>
+								<div class="Rtable-cell--content date-content">{{application?.college_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Intake</div>
+								<div class="Rtable-cell--content date-content" *ngIf="application?.intake_date == null">-</div>
+								<div class="Rtable-cell--content date-content" *ngIf="application?.intake_date != null">
+									{{application?.intake_date}}/{{application?.intake_month}}/{{application?.intake_year}} To {{application?.intake_to_date}}/{{application?.intake_to_month}}/{{application?.intake_to_year}}
+								</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course Duration</div>
+								<div class="Rtable-cell--content date-content">{{application?.duration}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Fees</div>
+								<div class="Rtable-cell--content date-content">{{application?.fees}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p1 = $event" id='1'></pagination-controls>			
+			</p-tabPanel>
+			<p-tabPanel header="Admission Acceptance">
+				<h3>Note : All accepted applications with payment done.</h3>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+							<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear" (click)="filterText=''">
+								<mat-icon>close</mat-icon>
+							</button>
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="filterYearWise($event)" >
+								<mat-option value="2017">2017-2018</mat-option>
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total admissions accepted:</b></h5>{{application_data?.length}}
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Application Date</div>
+							<div class="Rtable-cell topic-cell column-heading">Student Name</div>
+							<div class="Rtable-cell date-cell column-heading">Student City</div>
+							<div class="Rtable-cell date-cell column-heading">Student Country</div>
+							<div class="Rtable-cell date-cell column-heading">Degree</div>
+							<div class="Rtable-cell date-cell column-heading">Course</div>
+							<div class="Rtable-cell date-cell column-heading">Specialization</div>
+							<div class="Rtable-cell date-cell column-heading">Institute Name</div>
+							<div class="Rtable-cell date-cell column-heading">Mode of Pay</div>
+							<div class="Rtable-cell date-cell column-heading">Intake</div>
+							<div class="Rtable-cell date-cell column-heading">Course Duration</div>
+							<div class="Rtable-cell date-cell column-heading">Fees</div>
+						</div>
+						
+						<div class="Rtable-row is-striped" *ngFor="let application of application_data | filter:{application_date: filterText, student_name: filterText, student_city: filterText, country_name: filterText, degree: filterText,
+								course_name: filterText, specialization: filterText,college_name: filterText,duration: filterText,fees: filterText} | paginate: { itemsPerPage: 10, currentPage: p2 ,id:'2' }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Application Date</div>
+								<div class="Rtable-cell--content date-content">{{application?.application_date}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{application?.student_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Student City</div>
+								<div class="Rtable-cell--content date-content">{{application?.student_city}} </div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Student Country</div>
+								<div class="Rtable-cell--content date-content">{{application?.country_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Degree</div>
+								<div class="Rtable-cell--content date-content">{{application?.degree}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course</div>
+								<div class="Rtable-cell--content date-content">{{application?.course_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Specialization</div>
+								<div class="Rtable-cell--content date-content">{{application?.specialization}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Institute Name</div>
+								<div class="Rtable-cell--content date-content">{{application?.college_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Mode of Pay</div>
+									<div class="Rtable-cell--content date-content">{{application?.payment_mode}}</div>
+								</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Intake</div>
+								<div class="Rtable-cell--content date-content" *ngIf="application?.intake_date == null">-</div>
+								<div class="Rtable-cell--content date-content" *ngIf="application?.intake_date != null">
+									{{application?.intake_date}}/{{application?.intake_month}}/{{application?.intake_year}} To {{application?.intake_to_date}}/{{application?.intake_to_month}}/{{application?.intake_to_year}}
+								</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course Duration</div>
+								<div class="Rtable-cell--content date-content">{{application?.duration}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Fees</div>
+								<div class="Rtable-cell--content date-content">{{application?.fees}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p2 = $event" id='2'></pagination-controls>			
+			</p-tabPanel>
+			<p-tabPanel header="Application">
+				<h3>Applications Requested</h3>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+							<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear" (click)="filterText=''">
+								<mat-icon>close</mat-icon>
+							</button>
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="filterYear('app','new',$event)" >
+								<mat-option value="2017">2017-2018</mat-option>
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total Count:</b></h5>{{application_data?.length}}
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Date</div>
+							<div class="Rtable-cell date-cell column-heading">Application No.</div>
+							<div class="Rtable-cell date-cell column-heading">Application No.For 1st Payment</div>
+							<div class="Rtable-cell date-cell column-heading">Category</div>
+							<div class="Rtable-cell date-cell column-heading">Country Name</div>
+							<div class="Rtable-cell date-cell column-heading">Student Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Email Address</div>
+							<div class="Rtable-cell date-cell column-heading">Selected Course</div>
+							<div class="Rtable-cell date-cell column-heading">Action</div>
+						</div>
+						
+						<div class="Rtable-row is-striped" *ngFor="let application of application_data | filter:{date: filterText, email: filterText, course: filterText, specialization: filterText, student_category: filterText,
+							enrollment_no: filterText, stu_name: filterText,country_name: filterText,user_id: filterText} | paginate: { itemsPerPage: 10, currentPage: p3 ,id:'3' }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Date</div>
+								<div class="Rtable-cell--content date-content">{{application?.date}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Application No.</div>
+								<div class="Rtable-cell--content date-content">{{application?.enrollment_no}} </div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Application No.For 1st Payment</div>
+								<div class="Rtable-cell--content date-content">{{application?.user_id}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Category</div>
+								<div class="Rtable-cell--content date-content">{{application?.student_category}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Country Name</div>
+								<div class="Rtable-cell--content date-content">{{application?.country_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Student Name</div>
+								<div class="Rtable-cell--content date-content">{{application?.stu_name}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{application?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Selected Course</div>
+								<div class="Rtable-cell--content date-content">{{application?.specialization}} ({{application?.course}})</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Action</div>
+								<div class="Rtable-cell--content date-content">
+									<i class="fa ion-person" status="danger" nbPopover="View More" nbPopoverMode="hover" (click)="viewMore('application',application.user_id,application.course_id,'new',application.id);"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<pagination-controls (pageChange)="p3 = $event" id='3'></pagination-controls>			
+			</p-tabPanel>
+			<p-tabPanel header="Eligibility">
+				<b><h3>Eligibility Applications</h3></b><br>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="filterYear('eligib','new',$event)" >
+								<mat-option value="2017">2017-2018</mat-option>
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total Count:</b></h5>{{application_data?.length}}
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Application Id</div>
+							<div class="Rtable-cell date-cell  column-heading">Student Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Email Address</div>
+							<div class="Rtable-cell date-cell column-heading">Selected Course</div>
+							<div class="Rtable-cell date-cell column-heading">Forword Letter</div>
+							<div class="Rtable-cell date-cell column-heading">Provisional Letter</div>
+							<div class="Rtable-cell date-cell column-heading">Action</div>
+						</div>
+						
+						<div class="Rtable-row is-striped" *ngFor="let application of application_data | filter:{stu_name: filterText, email: filterText, specialization: filterText, course: filterText} | paginate: { itemsPerPage: 10, currentPage: p4 ,id:'4' }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Application Id</div>
+								<div class="Rtable-cell--content date-content">{{application?.id}}</div>
+							</div>
+							<div class="Rtable-cell date-cell ">
+								<div class="Rtable-cell--heading">Student Name</div>
+								<div class="Rtable-cell--content date-content">{{application?.stu_name}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{application?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Selected Course</div>
+								<div class="Rtable-cell--content date-content">{{application?.specialization}} ({{application?.course}})</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Forword Letter</div>
+								<div class="Rtable-cell--content date-content">
+									<a (click)=downloadForewordLetter(application.pdf,application.file_name)><img src="{{serverUrl}}/upload/img/pdf1.png"  style="height:50px; width:50px;"></a>
+								</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Provisional Letter</div>
+								<div class="Rtable-cell--content date-content">
+									<img src="{{serverUrl}}/upload/img/pdf1.png"  style="height:50px; width:50px;" (click)="DownloadProvisionalLetter(application.user_id,application.id)">
+								</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Action</div>
+								<div class="Rtable-cell--content date-content">
+									<i class="fa ion-person" id='view_eligibility{{application.id}}' status="danger" nbPopover="View More" nbPopoverMode="hover" (click)="viewMore('eligibility',application.user_id,application.course_id,'new',application.id);"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p4 = $event" id='4'></pagination-controls>
+			</p-tabPanel>
+			<p-tabPanel header="Email Activity">
+				<div [nbSpinner]="loadingbutton" nbSpinnerStatus="primary">
+					<h3>Email Activity</h3>
+					<div class="row">
+						<div class="col-md-8">
+							<mat-form-field class="example-full-width">
+								<input matInput  type="text" [value]="filterText"
+								[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+								<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear" (click)="filterText=''">
+									<mat-icon>close</mat-icon>
+								</button>
+							</mat-form-field>
+						</div>
+						<div class="col-md-4">
+							<button nbButton outline status="primary" (click)="downloadEmailExcel()">Email Tracker Excel</button>
+						</div>
+					</div>
+					<div class="wrapper">
+						<h5><b>Total Count:</b></h5>{{emailActivityData?.length}}
+						<div class="Rtable Rtable--5cols Rtable--collapse">
+							<div class="Rtable-row Rtable-row--head">
+								<div class="Rtable-cell topic-cell column-heading">Email ID</div>
+								<div class="Rtable-cell date-cell column-heading">Subject</div>
+								<div class="Rtable-cell date-cell column-heading">Status</div>
+								<div class="Rtable-cell date-cell column-heading">Open Count</div>
+								<div class="Rtable-cell date-cell column-heading">Click Count</div>
+								<div class="Rtable-cell date-cell column-heading">Last-Event-Time</div>
+							</div>
+								
+							<div class="Rtable-row is-striped" *ngFor="let email of emailActivityData | filter:{to_email: filterText, subject: filterText, status: filterText, opens_count: filterText, clicks_count: filterText,
+								last_event_time: filterText} | paginate: { itemsPerPage: 10, currentPage: p5 ,id:'5' }">
+								<div class="Rtable-cell topic-cell">
+									<div class="Rtable-cell--content title-content">{{email.to_email}}</div>
+								</div>
+								<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Subject</div>
+									<div class="Rtable-cell--content date-content">{{email.subject}} </div>
+								</div>
+								<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Status</div>
+									<div class="Rtable-cell--content date-content">{{email.status}}</div>
+								</div>
+								<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Open Count</div>
+									<div class="Rtable-cell--content date-content">{{email.opens_count}}</div>
+								</div>
+								<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Click Count</div>
+									<div class="Rtable-cell--content date-content">{{email.clicks_count}}</div>
+								</div>
+								<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Last-Event-Time</div>
+									<div class="Rtable-cell--content date-content">{{email.last_event_time}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<pagination-controls (pageChange)="p5 = $event" id='5'></pagination-controls>	
+				</div>
+			</p-tabPanel>
+			<p-tabPanel header="Student Statistics">
+				<h3>Note : Total microsite visits.</h3>
+				<div class="row">
+					<div class="col-lg-8" *ngIf="pieData == 1">
+						<canvas
+							baseChart
+							[chartType]="'pie'"
+							[datasets]="pieChartData"
+							[labels]="pieChartLabels"
+							[options]="pieChartOptions"
+							[legend]="true"
+							[colors]="pieChartColor">
+						</canvas>
+					</div>
+					<div class="col-lg-4 scroll">
+						<table class="table table-striped w-auto">
+							<thead>
+								<tr><b><h5>CountryWise Student Count completed 60% profile</h5></b></tr>
+								<tr>
+									<th>Total</th>
+									<th>Count</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="info" *ngFor="let data of countryData ">
+									<td>{{data?.country}}</td>
+									<td>{{data?.count}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-12 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total institutes:{{tableData?.length}}</b></h5>
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell topic-cell column-heading">Institute Name</div>
+							<div class="Rtable-cell date-cell column-heading">National Students</div>
+							<div class="Rtable-cell date-cell column-heading">International Students</div>
+							<div class="Rtable-cell date-cell column-heading">Total</div>
+						</div>
+								
+						<div class="Rtable-row is-striped" *ngFor="let data of tableData | filter : {college_name : filterText} | paginate: { itemsPerPage: 10, currentPage: p6 ,id:'6' }">
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{data?.college_name}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">National Students</div>
+								<div class="Rtable-cell--content date-content">{{data?.national_visits}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">International Students</div>
+								<div class="Rtable-cell--content date-content">{{data?.international_visits}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Total</div>
+								<div class="Rtable-cell--content date-content">{{data?.national_visits + data?.international_visits}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p6 = $event" id='6'></pagination-controls>
+			</p-tabPanel>
+			<p-tabPanel header="Activity Tracker">
+				<h3>Note : All Activity.</h3>
+				<div class="row">
+					<div class="col-md-12 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Date</div>
+							<div class="Rtable-cell topic-cell column-heading">Username</div>
+							<div class="Rtable-cell date-cell column-heading">Action</div>
+							<div class="Rtable-cell date-cell column-heading">DATA</div>
+						</div>
+									
+						<div class="Rtable-row is-striped" *ngFor="let activity of activity_data | filter:{created_at: filterText, username:filterText, action:filterText, data:filterText }  | paginate: { itemsPerPage: 10, currentPage: p7 ,id:'7' }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Date</div>
+								<div class="Rtable-cell--content date-content">{{activity?.created_at}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{activity?.username}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Action</div>
+								<div class="Rtable-cell--content date-content">{{activity?.action}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">DATA</div>
+								<div class="Rtable-cell--content date-content">{{activity?.data}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p7 = $event" id = '7'></pagination-controls>
+			</p-tabPanel>
+			<!-- <p-tabPanel header="First Challan">
+				<h3>First Payment Challan Details</h3>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="paymentFilter('first',$event)" >
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total Count:{{firstPaymentChallanData?.length}}</b></h5>
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Student Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Student Email</div>
+							<div class="Rtable-cell date-cell column-heading">Course Name</div>
+							<div class="Rtable-cell date-cell column-heading">Challan No.</div>
+							<div class="Rtable-cell date-cell column-heading">Application ID</div>
+							<div class="Rtable-cell date-cell column-heading">Payment Date</div>
+							<div class="Rtable-cell date-cell column-heading">New Application ID</div>
+							<div class="Rtable-cell date-cell column-heading">Download</div>
+						</div>
+										
+						<div class="Rtable-row is-striped" *ngFor="let data of firstPaymentChallanData | filter: {id: filterText, enrollment_no: filterText, stu_name: filterText }  | paginate: { itemsPerPage: 10, currentPage: p8 ,id:'8' }">
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Student Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.stu_name}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{data?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.course}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Challan No.</div>
+								<div class="Rtable-cell--content date-content">{{data?.challan_no}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Application ID</div>
+								<div class="Rtable-cell--content date-content">{{data?.id}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Payment Date</div>
+								<div class="Rtable-cell--content date-content">{{data?.date}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">New Application ID</div>
+								<div class="Rtable-cell--content date-content">{{data?.enrollment_no}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Download</div>
+								<div class="Rtable-cell--content date-content">
+									<img src="{{serverUrl}}/upload/img/images.jpg"  style="height:30px; width:80px;" (click)="DownloadFistChallan(data?.user_id,data?.id,data?.downloadlink)">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p8 = $event" id='8'></pagination-controls>
+			</p-tabPanel>
+			<p-tabPanel header="Second Challan">
+				<h3>Second Payment Challan Details</h3>
+				<div class="row">
+					<div class="col-lg-6 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="paymentFilter('second',$event)" >
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total Count:{{secondPaymentChallanData?.length}}</b></h5>
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Student Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Student Email</div>
+							<div class="Rtable-cell date-cell column-heading">Course Name</div>
+							<div class="Rtable-cell date-cell column-heading">Challan No.</div>
+							<div class="Rtable-cell date-cell column-heading">Application ID for 1st payment</div>
+							<div class="Rtable-cell date-cell column-heading">Application ID</div>
+							<div class="Rtable-cell date-cell column-heading">Payment Date</div>
+							<div class="Rtable-cell date-cell column-heading">New Application ID</div>
+							<div class="Rtable-cell date-cell column-heading">Download</div>
+						</div>
+											
+						<div class="Rtable-row is-striped" *ngFor="let data of secondPaymentChallanData | filter:{stu_name:filterText,email:filterText,course:filterText,challan_no:filterText,user_id:filterText,id:filterText,date:filterText,enrollment_no:filterText}  | paginate: { itemsPerPage: 10, currentPage: p9 ,id:'9' }">
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Student Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.stu_name}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{data?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.course}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Challan No.</div>
+								<div class="Rtable-cell--content date-content">{{data?.challan_no}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Application ID for 1st payment</div>
+								<div class="Rtable-cell--content date-content">{{data?.user_id}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Application ID</div>
+								<div class="Rtable-cell--content date-content">{{data?.id}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Payment Date</div>
+								<div class="Rtable-cell--content date-content">{{data?.date}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">New Application ID</div>
+								<div class="Rtable-cell--content date-content">{{data?.enrollment_no}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Download</div>
+								<div class="Rtable-cell--content date-content" *ngIf="data.amount == 82915.00">
+									<img src="{{serverUrl}}/upload/img/images.jpg" (click)="DownloadSecondChallan(data?.downloadlink)"  style="height:30px; width:80px;">
+								</div>
+								<div class="Rtable-cell--content date-content"  *ngIf="data.amount == 40000.00">
+									<img src="{{serverUrl}}/upload/img/images.jpg" (click)="DownloadSecondChallan(data?.downloadlink)"  style="height:30px; width:80px;">
+								</div>
+								<div class="Rtable-cell--content date-content" *ngIf="data.amount == 42915.00">
+									<img src="{{serverUrl}}/upload/img/images.jpg" (click)="DownloadSecondChallan(data?.downloadlink2)"  style="height:30px; width:80px;">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p9 = $event" id='9'></pagination-controls>
+			</p-tabPanel>
+			<p-tabPanel header="College Attended">
+				<h3>College Attended Student</h3>
+				<div class="row">
+					<div class="col-md-12 ">
+						<mat-form-field class="example-full-width">
+							<input matInput  type="text" [value]="filterText"
+							[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="wrapper">
+					<h5><b>Total Count:{{collegeAttendedStudents?.length}}</b></h5>
+					<div class="Rtable Rtable--5cols Rtable--collapse">
+						<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Firm letter Sent Date</div>
+							<div class="Rtable-cell date-cell column-heading">Student Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Student Email</div>
+							<div class="Rtable-cell date-cell column-heading">College Allocated</div>
+							<div class="Rtable-cell date-cell column-heading">Course Name</div>
+							<div class="Rtable-cell date-cell column-heading">College Status</div>
+						</div>
+										
+						<div class="Rtable-row is-striped" *ngFor="let data of collegeAttendedStudents | paginate: { itemsPerPage: 10, currentPage: p10 , id:'10' } | filter:{date: filterText, stu_name: filterText, email: filterText, college_allocated: filterText, course: filterText, specialization: filterText, institute_flag: filterText }">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Firm letter Sent Date</div>
+								<div class="Rtable-cell--content date-content">{{data?.date}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+									<div class="Rtable-cell--heading">Student Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.stu_name}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{data?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">College Allocated</div>
+								<div class="Rtable-cell--content date-content">{{data?.college_allocated}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Course Name</div>
+								<div class="Rtable-cell--content date-content">{{data?.course}}{{data?.specialization}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">College Status</div>
+								<div class="Rtable-cell--content date-content" *ngIf="data?.institute_flag == ''">
+										Pending
+								</div>
+								<div class="Rtable-cell--content date-content" *ngIf="data?.institute_flag != ''">
+									{{data?.institute_flag}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<pagination-controls (pageChange)="p10 = $event" id='10'></pagination-controls>
+			</p-tabPanel>
+			<p-tabPanel header="SMS Activity">
+				<div [nbSpinner]="loadingbutton" nbSpinnerStatus="primary">
+					<h3>SMS Activity</h3>
+					<br>
+					<h5 style="color: red">Note :- Data last updated on {{ yesterday }}-{{ month }}-{{ year }}  11:59:59</h5>
+					<mat-form-field>
+						<input matInput [matDatepicker]="picker" placeholder="Choose a month and year" [formControl]="date">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker (monthSelected)="monthSelectedSMS($event)" startView="multi-year"></mat-datepicker>
+					</mat-form-field>
+					<div *ngIf="smsshow == 1">
+						<div class="col-md-8">
+							<mat-form-field class="example-full-width">
+								<input matInput  type="text" [value]="filterText"
+								[placeholder]="filterPlaceholder" [formControl]="filterInput" />
+								<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear" (click)="filterText=''">
+									<mat-icon>close</mat-icon>
+								</button>
+							</mat-form-field>
+						</div>
+						<div class="wrapper">
+							<h5><b>Total Count:</b></h5>{{smsActivityData?.length}}
+							<div class="Rtable Rtable--5cols Rtable--collapse">
+								<div class="Rtable-row Rtable-row--head">
+									<div class="Rtable-cell topic-cell column-heading">Mobile No.</div>
+									<div class="Rtable-cell date-cell column-heading">Message</div>
+									<div class="Rtable-cell date-cell column-heading">SentDate</div>
+									<div class="Rtable-cell date-cell column-heading">Status</div>
+									<div class="Rtable-cell date-cell column-heading">Error</div>
+								</div>
+												
+								<div class="Rtable-row is-striped" *ngFor="let sms of smsActivityData | filter:{to:filterText,errorMessage:filterText,msg:filterText,date:filterText,status:filterText} | paginate: { itemsPerPage: 10, currentPage: p  }">
+									<div class="Rtable-cell topic-cell">
+										<div class="Rtable-cell--content title-content">{{sms.to}}</div>
+									</div>
+									<div class="Rtable-cell date-cell">
+										<div class="Rtable-cell--heading">Message</div>
+										<div class="Rtable-cell--content date-content">{{sms.body}}</div>
+									</div>
+									<div class="Rtable-cell date-cell">
+										<div class="Rtable-cell--heading">SentDate</div>
+										<div class="Rtable-cell--content date-content">{{sms.dateSent}}</div>
+									</div>
+									<div class="Rtable-cell date-cell">
+										<div class="Rtable-cell--heading">Status</div>
+										<div class="Rtable-cell--content date-content">{{sms.status}}</div>
+									</div>
+									<div class="Rtable-cell date-cell">
+										<div class="Rtable-cell--heading">Error</div>
+										<div class="Rtable-cell--content date-content">{{sms.errorMessage}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<pagination-controls (pageChange)="p = $event"></pagination-controls>
+					</div>
+				</div>
+			</p-tabPanel>
+			<p-tabPanel header="CountryWise Students">
+				<h3>CountryWise Students</h3>
+				<div class="row">
+					<div class="col-lg-3 ">
+						<mat-form-field>
+							<mat-select placeholder="select Year"[(ngModel)]="selectedYear" name="selectedYear" id="yearCtrl"  (ngModelChange)="filterYearStudent($event)" >
+								<mat-option value="2017">2017-2018</mat-option>
+								<mat-option value="2018">2018-2019</mat-option>
+								<mat-option value="2019">2019-2020</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-8" *ngIf="pieData1 == 1">
+						<canvas
+							baseChart
+							[chartType]="'pie'"
+							[datasets]="pieChartData"
+							[labels]="pieChartLabels"
+							[options]="pieChartOptions"
+							[legend]="true"
+							[colors]="pieChartColor">
+						</canvas>
+					</div>
+					<div class="col-lg-4 scroll">
+						<table class="table table-striped w-auto">
+							<thead>
+								<tr><b><h5>CountryWise Student Count</h5></b></tr>
+								<tr>
+									<th>Total</th>
+									<th>Count</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="info" *ngFor="let data of StudentcountryData ">
+									<td>{{data?.country}}</td>
+									<td>{{data?.count}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</p-tabPanel>
+			<p-tabPanel header="UTM SOURCE">
+				<div class="row">
+				<div class="col-lg-6 ">
+					<mat-form-field class="example-full-width">
+					<input matInput type="text" [value]="filterText" [placeholder]="filterPlaceholder"
+						[formControl]="filterInput" />
+					<button mat-button *ngIf="filterText" matSuffix mat-icon-button aria-label="Clear"
+						(click)="filterText=''">
+						<mat-icon>close</mat-icon>
+					</button>
+					</mat-form-field>
+				</div>
+				<div class="col-lg-3 ">
+					<mat-form-field>
+					<mat-select placeholder="select Source" [(ngModel)]="selectedSource" name="selectedSource" id="sourceCtrl"
+						(ngModelChange)="sourcefilter($event)">
+						<mat-option value="mu.ac.in">Mumbai University</mat-option>
+						<mat-option value="google">Google</mat-option>
+						<mat-option value="facebook">Facebook</mat-option>
+						<mat-option value="mu.admissiondesk.org">mu.admissiondesk.org</mat-option>
+						<mat-option value="other">other</mat-option>
+					</mat-select>
+					</mat-form-field>
+				</div>
+		
+				</div>
+				<div class="row">
+					<div class="wrapper"> 
+						<h5><b>Filtered student count: </b></h5>{{studentdata?.length}}
+						<div class="Rtable Rtable--5cols Rtable--collapse">
+							<div class="Rtable-row Rtable-row--head">
+							<div class="Rtable-cell date-cell column-heading">Sr.No.</div>
+							<div class="Rtable-cell date-cell column-heading">Full Name</div>
+							<div class="Rtable-cell topic-cell column-heading">Email Address</div>
+							<div class="Rtable-cell date-cell column-heading">Country Birth</div>
+							<div class="Rtable-cell date-cell column-heading">User Type</div>
+							<div class="Rtable-cell date-cell column-heading">UTM Sources</div>
+							</div>
+				
+							<div class="Rtable-row is-striped" *ngFor="let student of studentdata | filter:{name:filterText,email:filterText,courses:filterText,city:filterText,state:filterText,country: filterText,stu_name : filterText,country_name:filterText,interested_courses:filterText,user_type:filterText} : false | paginate: { itemsPerPage: 10, currentPage: p11 , id:'11' } ;let i=index; ">
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Sr.No.</div>
+								<div class="Rtable-cell--content date-content">{{ i + 1}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Full Name</div>
+								<div class="Rtable-cell--content date-content">{{student?.name}} {{student?.surname}}</div>
+							</div>
+							<div class="Rtable-cell topic-cell">
+								<div class="Rtable-cell--content title-content">{{student?.email}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">Country Birth</div>
+								<div class="Rtable-cell--content date-content">{{student?.Country_birth}}</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">User Type</div>
+								<div *ngIf="student?.user_type == 'student'" class="Rtable-cell--content date-content">Mumbai</div>
+								<div *ngIf="student?.user_type == 'dte'" class="Rtable-cell--content date-content">DTE</div>
+							</div>
+							<div class="Rtable-cell date-cell">
+								<div class="Rtable-cell--heading">UTM Sources</div>
+								<div class="Rtable-cell--content date-content">{{student?.utm_source}}</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					<pagination-controls (pageChange)="p11 = $event" id='11'></pagination-controls>
+				</div>
+			</p-tabPanel> -->
+		</p-tabView>    
+	</nb-card-body>
+</nb-card>
+	
