@@ -150,10 +150,10 @@ export class AdminViewComponent {
       this.studentData =  viewAllData['data'];
       this.userTranscripts = viewAllData['data']['userTranscripts'];
     }else if(this.category === "dashboard"){
-      console.log("dashboard")
-      console.log(this.userId);
+      //console.log("dashboard")
+      //console.log(this.userId);
         var data = await this.adminApi.getUserInformation(this.userId);
-        console.log(data['status']);
+        //console.log(data['status']);
         if(data['status'] == 200){
           var viewAllData = await this.adminApi.getAllStudentData(this.userId);
           this.studentData =  viewAllData['data'];

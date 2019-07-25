@@ -161,7 +161,7 @@ export class SecondDialogComponent {
       this.user_id = token.getPayload()['id'];
       //console.log(token.getPayload()['country_birth'])
     if(token.getPayload()['country_birth'] ==='96' || token.getPayload()['country_birth'] ===96){
-      console.log("token.getPayload()['country_birth']")
+      //console.log("token.getPayload()['country_birth']")
         this.id = 1
     }
   });

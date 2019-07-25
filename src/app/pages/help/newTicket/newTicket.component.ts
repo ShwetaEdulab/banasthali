@@ -78,7 +78,7 @@ export class NewTicketComponent implements OnInit {
     }
    
     send(){
-      console.log("this.owner------->"+this.owner)
+      //console.log("this.owner------->"+this.owner)
       if(this.user.role == 'admin' || this.user.role == 'sub_admin'){
         if(this.userEmail == null){
           var response =  this.supportapi.createTicket(this.subject,this.content,this.group.id,this.owner,this.email);

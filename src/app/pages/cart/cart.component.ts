@@ -77,7 +77,7 @@ export class CartComponent  {
     var firstpayment = this.api.firstpaymentrequest(this.courseId);
     firstpayment.subscribe(
         data => {
-          console.log("data['data']['orderId'];========>"+data['data']['orderId']);
+          //console.log("data['data']['orderId'];========>"+data['data']['orderId']);
           this.router.navigate(['/pages/application'])
         },
         error => {
